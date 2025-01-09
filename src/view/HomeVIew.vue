@@ -12,23 +12,26 @@ import {
 import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 import axiosInstance from '@/lib/axios'
 import CreateModal from '@/components/Modal/CreateModal.vue'
+import UpdateModal from '@/components/Modal/UpdateModal.vue'
 
 // Reactive variables
-const tasks = ref<any[]>([]) // To hold task data
-const error = ref<string | null>(null) // Error message
-const loading = ref<boolean>(true) // Loading state
-const showModal = ref(false) // Modal visibility state
+const tasks = ref<any[]>([])
+const error = ref<string | null>(null)
+const loading = ref<boolean>(true)
+const showModal = ref(false)
+const showUpdateModal = ref(false)
+const taskToEdit = ref<any>(null)
 
 // Fetch task data
 onMounted(async () => {
   try {
-    const response = await axiosInstance.get('/api/posts') // Replace with your API endpoint
-    tasks.value = response.data.message.posts // Set task data
+    const response = await axiosInstance.get('/api/posts')
+    tasks.value = response.data.message.posts
   } catch (err) {
     error.value = 'Error fetching tasks'
-    console.error(err) // Log error
+    console.error(err)
   } finally {
-    loading.value = false // Set loading to false
+    loading.value = false
   }
 })
 
@@ -67,19 +70,12 @@ const columns: ColumnDef<any>[] = [
           },
           'Create',
         ),
-        h(
-          'button',
-          {
-            class: 'px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600',
-            onClick: () => handleEdit(row.original.id),
-          },
-          'Edit',
-        ),
+
         h(
           'button',
           {
             class: 'px-4 py-2 bg-yellow-500 text-white rounded hover:bg-blue-700',
-            onClick: () => handleUpdate(row.original.id),
+            onClick: () => handleEdit(row.original),
           },
           'Update',
         ),
@@ -97,29 +93,28 @@ const columns: ColumnDef<any>[] = [
 
 // Edit and Delete handlers
 function handleEdit(task: any) {
-  console.log('Edit task:', task)
+  taskToEdit.value = task
+
+  showUpdateModal.value = true
 }
 
 function handleDelete(taskId: number) {
-  console.log('Delete task ID:', taskId)
+  axiosInstance.delete(`/api/posts/${taskId}`)
+  alert('Task deleted successfully')
 }
 
 function handleCreate(task: any) {
   console.log('Create new task:', task)
-  showModal.value = true // Open modal
-}
-
-function handleUpdate(task: any) {
-  console.log('Update task:', task)
+  showModal.value = true
 }
 
 // Create table instance
 const table = useVueTable({
   get data() {
-    return tasks.value // Bind to reactive task data
+    return tasks.value
   },
   get columns() {
-    return columns // Use predefined columns
+    return columns
   },
   getCoreRowModel: getCoreRowModel(),
 })
@@ -177,5 +172,10 @@ const table = useVueTable({
 
     <!-- Modal for creating a new task -->
     <CreateModal :showModal="showModal" @update:showModal="showModal = $event" />
+    <UpdateModal
+      :task="taskToEdit"
+      :showModal="showUpdateModal"
+      @update:showModal="showUpdateModal = $event"
+    />
   </div>
 </template>
