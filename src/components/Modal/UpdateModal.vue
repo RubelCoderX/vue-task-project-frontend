@@ -26,18 +26,18 @@ const updatedTask = ref({
   title: '',
   description: '',
   due_date: '',
-  status: 'pending', // Ensure this matches one of the SelectItem values
+  status: 'pending',
 })
 
-const loading = ref(false) // For loading state
+const loading = ref(false)
 
 const closeModal = () => {
-  emit('update:showModal', false) // Close modal
+  emit('update:showModal', false)
   resetForm()
 }
 
 const resetForm = () => {
-  updatedTask.value = { title: '', description: '', due_date: '', status: 'pending' } // Ensure this matches one of the SelectItem values
+  updatedTask.value = { title: '', description: '', due_date: '', status: 'pending' }
 }
 console.log('Task to update:', props?.task?.id)
 

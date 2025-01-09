@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
+import axiosInstance from '@/lib/axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -11,11 +12,12 @@ const formData = ref({
 })
 const router = useRouter()
 
-// const signup = async () => {
-//   const isRegistered = await register(formData.value)
+const signup = async () => {
+  console.log('formData', formData.value)
+  const isRegistered = await axiosInstance.post('/api/signup', formData.value)
 
-//   if (isRegistered) router.push('/')
-// }
+  if (isRegistered) router.push('/')
+}
 </script>
 
 <template>

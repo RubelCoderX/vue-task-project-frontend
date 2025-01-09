@@ -8,8 +8,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import Input from '@/components/ui/input/Input.vue'
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+function navigateToLogin() {
+  router.push('/login')
+}
+
+function navigateToRegister() {
+  router.push('/register')
+}
 </script>
 
 <template>
@@ -31,8 +41,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Register</DropdownMenuItem>
-        <DropdownMenuItem>Login</DropdownMenuItem>
+        <DropdownMenuItem @click="navigateToRegister">Register</DropdownMenuItem>
+        <DropdownMenuItem @click="navigateToLogin">Login</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   </nav>

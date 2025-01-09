@@ -14,8 +14,8 @@ import {
 } from '@/components/ui/select'
 import axiosInstance from '@/lib/axios'
 
-const props = defineProps({
-  showModal: Boolean, // Modal visibility state
+defineProps({
+  showModal: Boolean,
 })
 
 const emit = defineEmits(['update:showModal'])
@@ -28,7 +28,7 @@ const task = ref({
 })
 
 const closeModal = () => {
-  emit('update:showModal', false) // Close modal
+  emit('update:showModal', false)
   resetForm()
 }
 
@@ -39,9 +39,7 @@ const resetForm = () => {
 const handleSubmit = async () => {
   try {
     // Sending the task data to the backend API
-    const res = await axiosInstance.post('/api/posts', task.value)
-    console.log('res', res)
-    console.log('Creating task:', task.value)
+    await axiosInstance.post('/api/posts', task.value)
 
     // Show success alert
     alert('Task created successfully!')
@@ -50,8 +48,7 @@ const handleSubmit = async () => {
     closeModal()
   } catch (error) {
     console.error('Error creating task:', error)
-    alert('Error creating task. Please try again.') // Display error alert
-    // Handle error here (optional, e.g., show a notification)
+    alert('Error creating task. Please try again.')
   }
 }
 </script>
@@ -130,7 +127,3 @@ const handleSubmit = async () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Add basic styling for the modal */
-</style>
