@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { ref, onMounted, h } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'
@@ -92,6 +93,7 @@ const columns: ColumnDef<any>[] = [
 ]
 
 // Edit and Delete handlers
+
 function handleEdit(task: any) {
   taskToEdit.value = task
 
@@ -122,12 +124,11 @@ const table = useVueTable({
 
 <template>
   <div class="p-4">
-    <h1 class="text-blue-600 mb-4">Task List</h1>
+    <h1 class="text-blue-600 text-2xl font-semibold mb-4">Total Task List</h1>
 
     <!-- Loading State -->
     <div v-if="loading" class="text-gray-500">Loading tasks...</div>
 
-    <!-- Error State -->
     <div v-if="error" class="text-red-500">{{ error }}</div>
 
     <!-- Table -->
